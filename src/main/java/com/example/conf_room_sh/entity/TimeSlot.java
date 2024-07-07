@@ -4,6 +4,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -13,15 +14,16 @@ import java.util.UUID;
 @Entity
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class TimeSlot extends BaseEntity<UUID> {
 
-    @Column
+    @Column(nullable = false)
     private LocalDateTime start;
 
-    @Column
+    @Column(nullable = false)
     private LocalDateTime end;
 
-    @Column
+    @Column(nullable = false)
     private Boolean avaliable;
 
     @ManyToOne
@@ -31,4 +33,5 @@ public class TimeSlot extends BaseEntity<UUID> {
     @ManyToOne
     @JoinColumn(name = "room_id")
     private ConferenceRoom room;
+
 }

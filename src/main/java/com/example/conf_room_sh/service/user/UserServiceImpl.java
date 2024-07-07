@@ -4,8 +4,8 @@ import com.example.conf_room_sh.dto.user.UserDto;
 import com.example.conf_room_sh.dto.user.UserMapper;
 import com.example.conf_room_sh.entity.User;
 import com.example.conf_room_sh.exception.EmailException;
-import com.example.conf_room_sh.exception.NotFoundUserException;
-import com.example.conf_room_sh.exception.SaveUserException;
+import com.example.conf_room_sh.exception.NotFoundAnythingException;
+import com.example.conf_room_sh.exception.SaveEntityException;
 import com.example.conf_room_sh.exception.WrongParametersException;
 import com.example.conf_room_sh.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -43,7 +43,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getById(UUID id) {
-        return userRepository.findById(id).orElseThrow(() -> new NotFoundUserException("Пользователя с данным id не существует"));
+        return userRepository.findById(id).orElseThrow(() -> new NotFoundAnythingException("Пользователя с данным id не существует"));
 
     }
 
@@ -61,17 +61,17 @@ public class UserServiceImpl implements UserService {
             return userMapper.toUserDto(userRepository.save(user));
         } catch (Exception e) {
             log.debug("Произошла ошибка: Неправильно заполнены поля создаваемого пользователя");
-            throw new SaveUserException("Неправильно заполнены поля создаваемого пользователя");
+            throw new SaveEntityException("Неправильно заполнены поля создаваемого пользователя");
         }
     }
 
     @Transactional
     @Override
-    public UserDto updateUser(UUID userId, UserDto userDto) {
-        User user = getById(userId);
+    public UserDto updateUser(UUID id, UserDto userDto) {
+        User user = getById(id);
         Optional.ofNullable(userDto.getName()).ifPresent(user::setName);
         if (userDto.getEmail() != null) {
-            if (!emailAlreadyExist(userDto.getEmail(), userId)) {
+            if (!emailAlreadyExist(userDto.getEmail(), id)) {
                 try {
                     user.setEmail(userDto.getEmail());
                 } catch (Exception e) {
@@ -86,7 +86,7 @@ public class UserServiceImpl implements UserService {
             return userMapper.toUserDto(userRepository.save(user));
         } else {
             log.debug("Произошла ошибка: Введенного пользователя не существует");
-            throw new NotFoundUserException("Такого пользователя не существует");
+            throw new NotFoundAnythingException("Такого пользователя не существует");
         }
     }
 
@@ -99,16 +99,17 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public boolean emailAlreadyExist(String email, UUID userId) {
+    public boolean emailAlreadyExist(String email, UUID id) {
         for (User oldUser : userRepository.findAll()) {
             if (Objects.equals(oldUser.getEmail(), email)
-                    && !Objects.equals(oldUser.getId(), userId)) {
+                    && !Objects.equals(oldUser.getId(), id)) {
                 return true;
             }
         }
         return false;
     }
 
+    @Override
     public boolean userExistById(UUID id) {
         for (User oldUser : userRepository.findAll()) {
             if (Objects.equals(oldUser.getId(), id)) {

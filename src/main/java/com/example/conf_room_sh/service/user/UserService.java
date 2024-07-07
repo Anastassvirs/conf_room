@@ -15,13 +15,13 @@ public interface UserService {
 
     User getById(UUID id);
 
-    UserDto createUser(UserDto user);
+    UserDto createUser(UserDto userDto);
 
-    UserDto updateUser(UUID userId, UserDto userDto);
+    UserDto updateUser(UUID id, UserDto userDto);
 
     void deleteById(UUID id);
 
-    boolean emailAlreadyExist(String email, UUID userId);
+    boolean emailAlreadyExist(String email, UUID id);
 
     boolean userExistById(UUID id);
 }
