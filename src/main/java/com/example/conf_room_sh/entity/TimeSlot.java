@@ -31,7 +31,13 @@ public class TimeSlot extends BaseEntity<UUID> {
     private Booking booking;
 
     @ManyToOne
-    @JoinColumn(name = "room_id")
+    @JoinColumn(name = "room_id", nullable = false)
     private ConferenceRoom room;
 
+    public TimeSlot(LocalDateTime start, LocalDateTime end, Boolean avaliable, ConferenceRoom room) {
+        this.start = start;
+        this.end = end;
+        this.avaliable = avaliable;
+        this.room = room;
+    }
 }

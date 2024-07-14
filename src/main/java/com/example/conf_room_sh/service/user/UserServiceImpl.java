@@ -9,6 +9,7 @@ import com.example.conf_room_sh.exception.SaveEntityException;
 import com.example.conf_room_sh.exception.WrongParametersException;
 import com.example.conf_room_sh.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -26,6 +27,7 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
 
+    @Autowired
     public UserServiceImpl(UserRepository repository, UserMapper userMapper) {
         this.userRepository = repository;
         this.userMapper = userMapper;
@@ -44,7 +46,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getById(UUID id) {
         return userRepository.findById(id).orElseThrow(() -> new NotFoundAnythingException("Пользователя с данным id не существует"));
-
     }
 
     @Transactional

@@ -1,7 +1,6 @@
 package com.example.conf_room_sh.controller;
 
 import com.example.conf_room_sh.dto.booking.BookingDto;
-import com.example.conf_room_sh.dto.user.UserDto;
 import com.example.conf_room_sh.service.booking.BookingService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
