@@ -19,6 +19,4 @@ public interface ConferenceRoomService {
     ConferenceRoomDto update(UUID id, ConferenceRoomDto conferenceRoomDto);
 
     void deleteById(UUID id);
-
-    boolean existById(UUID id);
 }

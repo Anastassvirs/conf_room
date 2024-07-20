@@ -13,7 +13,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -48,7 +47,7 @@ public class BookingServiceImpl implements BookingService{
 
     @Transactional
     @Override
-    public BookingDto createBooking(BookingDto bookingDto) {
+    public BookingDto create(BookingDto bookingDto) {
         Booking booking = bookingMapper.toBooking(bookingDto);
         try {
             log.debug("Добавлена новая бронь: {}", booking);
@@ -61,10 +60,10 @@ public class BookingServiceImpl implements BookingService{
 
     @Transactional
     @Override
-    public BookingDto updateBooking(UUID id, BookingDto bookingDto) {
+    public BookingDto update(UUID id, BookingDto bookingDto) {
         Booking booking = getById(id);
         Optional.ofNullable(bookingDto.getComment()).ifPresent(booking::setComment);
-        if (bookingExistById(id)) {
+        if (bookingRepository.existsById(id)) {
             log.debug("Обновалена бронь: {}", booking);
             return bookingMapper.toBookingDto(bookingRepository.save(booking));
         } else {
@@ -79,13 +78,4 @@ public class BookingServiceImpl implements BookingService{
         bookingRepository.deleteById(id);
     }
 
-    @Override
-    public boolean bookingExistById(UUID id) {
-        for (Booking oldBooking : bookingRepository.findAll()) {
-            if (Objects.equals(oldBooking.getId(), id)) {
-                return true;
-            }
-        }
-        return false;
-    }
 }

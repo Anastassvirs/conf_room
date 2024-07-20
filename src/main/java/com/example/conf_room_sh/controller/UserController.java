@@ -28,12 +28,12 @@ public class UserController {
 
     @PostMapping
     public UserDto create(@RequestBody UserDto userDto) {
-        return userService.createUser(userDto);
+        return userService.create(userDto);
     }
 
     @PatchMapping(path = "/{userId}")
     public UserDto update(@PathVariable UUID userId, @RequestBody UserDto userDto) {
-        return userService.updateUser(userId, userDto);
+        return userService.update(userId, userDto);
     }
 
     @DeleteMapping(path = "/{userId}")

@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 @AllArgsConstructor
 public class TimeSlotMapper {
     private final ConferenceRoomRepository conferenceRoomRepository;
-    public static TimeSlotDto toTimeSlotDto(TimeSlot timeSlot) {
+    public TimeSlotDto toTimeSlotDto(TimeSlot timeSlot) {
         return new TimeSlotDto(
                 timeSlot.getStart(),
                 timeSlot.getEnd(),
@@ -34,7 +34,7 @@ public class TimeSlotMapper {
         );
     }
 
-    public static Page<TimeSlotDto> toPageTimeSlotDto(Page<TimeSlot> timeSlotsPage) {
-        return timeSlotsPage.map(TimeSlotMapper::toTimeSlotDto);
+    public Page<TimeSlotDto> toPageTimeSlotDto(Page<TimeSlot> timeSlotsPage) {
+        return timeSlotsPage.map(this::toTimeSlotDto);
     }
 }

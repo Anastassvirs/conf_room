@@ -65,12 +65,16 @@ public class ConferenceRoomServiceImpl implements ConferenceRoomService {
     @Override
     public ConferenceRoomDto update(UUID id, ConferenceRoomDto conferenceRoomDto) {
         ConferenceRoom conferenceRoom = conferenceRoomMapper.toConferenceRoom(conferenceRoomDto);
-        try {
-            log.debug("Добавлена новая переговорная: {}", conferenceRoom);
-            return conferenceRoomMapper.toConferenceRoomDto(conferenceRoomRepository.save(conferenceRoom));
-        } catch (Exception e) {
-            log.debug("Произошла ошибка: Неправильно заполнены поля создаваемой переговорной");
-            throw new SaveEntityException("Неправильно заполнены поля создаваемой переговорной");
+        if(conferenceRoomRepository.existsById(id)) {
+            try {
+                log.debug("Обновлена переговорная: {}", conferenceRoom);
+                return conferenceRoomMapper.toConferenceRoomDto(conferenceRoomRepository.save(conferenceRoom));
+            } catch (Exception e) {
+                log.debug("Произошла ошибка: Неправильно заполнены поля создаваемой переговорной");
+                throw new SaveEntityException("Неправильно заполнены поля создаваемой переговорной");
+            }
+        } else {
+            throw new NotFoundAnythingException("Переговорной с введённым id не существует");
         }
     }
 
@@ -78,15 +82,5 @@ public class ConferenceRoomServiceImpl implements ConferenceRoomService {
     @Override
     public void deleteById(UUID id) {
         conferenceRoomRepository.deleteById(id);
-    }
-
-    @Override
-    public boolean existById(UUID id) {
-        for (ConferenceRoom oldConferenceRoom : conferenceRoomRepository.findAll()) {
-            if (Objects.equals(oldConferenceRoom.getId(), id)) {
-                return true;
-            }
-        }
-        return false;
     }
 }

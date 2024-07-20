@@ -6,21 +6,21 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class UserMapper {
-    public static UserDto toUserDto(User user) {
+    public UserDto toUserDto(User user) {
         return new UserDto(
                 user.getName(),
                 user.getEmail()
         );
     }
 
-    public static User toUser(UserDto userDto) {
+    public User toUser(UserDto userDto) {
         return new User(
                 userDto.getName(),
                 userDto.getEmail()
         );
     }
 
-    public static Page<UserDto> toPageUserDto(Page<User> usersPage) {
-        return usersPage.map(UserMapper::toUserDto);
+    public Page<UserDto> toPageUserDto(Page<User> usersPage) {
+        return usersPage.map(this::toUserDto);
     }
 }

@@ -50,7 +50,7 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public UserDto createUser(UserDto userDto) {
+    public UserDto create(UserDto userDto) {
         User user = userMapper.toUser(userDto);
 
         if (Objects.isNull(userDto.getEmail()) || !userDto.getEmail().contains("@") ||
@@ -68,7 +68,7 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public UserDto updateUser(UUID id, UserDto userDto) {
+    public UserDto update(UUID id, UserDto userDto) {
         User user = getById(id);
         Optional.ofNullable(userDto.getName()).ifPresent(user::setName);
         if (userDto.getEmail() != null) {
@@ -82,7 +82,7 @@ public class UserServiceImpl implements UserService {
                 throw new EmailException("Данный email уже зарегистрирован");
             }
         }
-        if (userExistById(user.getId())) {
+        if (userRepository.existsById(id)) {
             log.debug("Обновлен пользователь: {}", user);
             return userMapper.toUserDto(userRepository.save(user));
         } else {
@@ -104,16 +104,6 @@ public class UserServiceImpl implements UserService {
         for (User oldUser : userRepository.findAll()) {
             if (Objects.equals(oldUser.getEmail(), email)
                     && !Objects.equals(oldUser.getId(), id)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    @Override
-    public boolean userExistById(UUID id) {
-        for (User oldUser : userRepository.findAll()) {
-            if (Objects.equals(oldUser.getId(), id)) {
                 return true;
             }
         }

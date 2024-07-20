@@ -14,11 +14,9 @@ public interface BookingService {
 
     Booking getById(UUID id);
 
-    BookingDto createBooking(BookingDto bookingDto);
+    BookingDto create(BookingDto bookingDto);
 
-    BookingDto updateBooking(UUID id, BookingDto bookingDto);
+    BookingDto update(UUID id, BookingDto bookingDto);
 
     void deleteById(UUID id);
-
-    boolean bookingExistById(UUID id);
 }

@@ -27,12 +27,12 @@ public class BookingController {
 
     @PostMapping
     public BookingDto create(@RequestBody BookingDto bookingDto) {
-        return bookingService.createBooking(bookingDto);
+        return bookingService.create(bookingDto);
     }
 
     @PatchMapping(path = "/{bookingId}")
     public BookingDto update(@PathVariable UUID bookingId, @RequestBody BookingDto bookingDto) {
-        return bookingService.updateBooking(bookingId, bookingDto);
+        return bookingService.update(bookingId, bookingDto);
     }
 
     @DeleteMapping(path = "/{bookingId}")
