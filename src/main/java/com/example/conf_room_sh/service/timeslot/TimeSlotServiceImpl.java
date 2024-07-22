@@ -11,10 +11,14 @@ import com.example.conf_room_sh.repository.TimeSlotRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -42,6 +46,21 @@ public class TimeSlotServiceImpl implements TimeSlotService {
     @Override
     public TimeSlotDto findById(UUID id) {
         return timeSlotMapper.toTimeSlotDto(getById(id));
+    }
+
+    @Override
+    public Page<TimeSlotDto> findAllByRoom(Integer from, Integer size, UUID roomId, boolean onlyAvaliable, LocalDate date) {
+        if (!conferenceRoomRepository.existsById(roomId)) {
+            throw new NotFoundAnythingException("Переговорной, к которой требуется найти таймслоты, не существует");
+        }
+        Pageable pageable = PageRequest.of(from / size, size);
+        LocalDateTime startOfDay = date.atStartOfDay();
+        LocalDateTime endOfDay = date.atTime(LocalTime.MAX); //TODO: Хз, мб можно лучше как-то сделать. надо подумать
+        if (onlyAvaliable) {
+            return timeSlotMapper.toPageTimeSlotDto(timeSlotRepository.findAllByAvaliableAndAndRoomIdAndStartAfterAndEndBefore(onlyAvaliable, roomId, startOfDay, endOfDay, pageable));
+        } else {
+            return timeSlotMapper.toPageTimeSlotDto(timeSlotRepository.findAllByRoomIdAndStartAfterAndEndBefore(roomId, startOfDay, endOfDay, pageable));
+        }
     }
 
     @Override

@@ -1,11 +1,19 @@
 package com.example.conf_room_sh.repository;
 
 import com.example.conf_room_sh.entity.TimeSlot;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Repository
 public interface TimeSlotRepository extends JpaRepository<TimeSlot, UUID> {
+    Page<TimeSlot> findAllByAvaliableAndAndRoomIdAndStartAfterAndEndBefore(Boolean available, UUID roomId, LocalDateTime startOfDay, LocalDateTime endOfDay, Pageable pageable);
+
+    Page<TimeSlot> findAllByRoomIdAndStartAfterAndEndBefore (UUID roomId, LocalDateTime startOfDay, LocalDateTime endOfDay, Pageable pageable);
+
+    //TODO: Посмотреть, что он нагенерирует и подумать над оптимальностью
 }

@@ -8,6 +8,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -38,5 +40,14 @@ public class TimeSlotController {
     @DeleteMapping(path = "/{timeSlotId}")
     public void deleteById(@PathVariable UUID timeSlotId) {
         timeSlotService.deleteById(timeSlotId);
+    }
+
+    @GetMapping("/room")
+    public Page<TimeSlotDto> findAllTimeSlotsByRoom(@RequestParam(defaultValue = "0") Integer from,
+                                          @RequestParam(defaultValue = "10") Integer size,
+                                          @RequestParam(required = false, defaultValue = "false") String isAllAvaliable,
+                                          @RequestParam() UUID roomId,
+                                          @RequestParam(required = false, defaultValue = "false") String date) {
+        return timeSlotService.findAllByRoom(from, size, roomId, Boolean.valueOf(isAllAvaliable), LocalDate.parse(date)); // TODO: Разобраться, как будет парситься дата. Подумать, в каком формате вообще ёё передавать
     }
 }
