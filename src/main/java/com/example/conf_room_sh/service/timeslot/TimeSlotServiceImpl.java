@@ -16,9 +16,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
+import java.time.Duration;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -49,17 +48,15 @@ public class TimeSlotServiceImpl implements TimeSlotService {
     }
 
     @Override
-    public Page<TimeSlotDto> findAllByRoom(Integer from, Integer size, UUID roomId, boolean onlyAvaliable, LocalDate date) {
+    public Page<TimeSlotDto> findAllByRoom(Integer from, Integer size, UUID roomId, LocalDateTime startTime, Duration duration) {
         if (!conferenceRoomRepository.existsById(roomId)) {
             throw new NotFoundAnythingException("Переговорной, к которой требуется найти таймслоты, не существует");
         }
-        Pageable pageable = PageRequest.of(from / size, size);
-        LocalDateTime startOfDay = date.atStartOfDay();
-        LocalDateTime endOfDay = date.atTime(LocalTime.MAX); //TODO: Хз, мб можно лучше как-то сделать. надо подумать
-        if (onlyAvaliable) {
-            return timeSlotMapper.toPageTimeSlotDto(timeSlotRepository.findAllByAvaliableAndAndRoomIdAndStartAfterAndEndBefore(onlyAvaliable, roomId, startOfDay, endOfDay, pageable));
+        if (size != 0) {
+            Pageable pageable = PageRequest.of(from / size, size);
+            return timeSlotMapper.toPageTimeSlotDto(timeSlotRepository.findAllByRoomIdAndStartAfterAndEndBefore(roomId, startTime, startTime.plus(duration), pageable));
         } else {
-            return timeSlotMapper.toPageTimeSlotDto(timeSlotRepository.findAllByRoomIdAndStartAfterAndEndBefore(roomId, startOfDay, endOfDay, pageable));
+            throw new NumberFormatException("Параметр size не может равняться нулю");
         }
     }
 

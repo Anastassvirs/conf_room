@@ -3,8 +3,6 @@ package com.example.conf_room_sh.dto.timeslot;
 import com.example.conf_room_sh.entity.TimeSlot;
 import com.example.conf_room_sh.exception.NotFoundAnythingException;
 import com.example.conf_room_sh.repository.ConferenceRoomRepository;
-import com.example.conf_room_sh.repository.TimeSlotRepository;
-import com.example.conf_room_sh.service.room.ConferenceRoomService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;

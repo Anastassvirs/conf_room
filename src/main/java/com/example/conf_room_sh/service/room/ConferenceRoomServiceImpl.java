@@ -2,7 +2,6 @@ package com.example.conf_room_sh.service.room;
 
 import com.example.conf_room_sh.dto.room.ConferenceRoomDto;
 import com.example.conf_room_sh.dto.room.ConferenceRoomMapper;
-import com.example.conf_room_sh.entity.Booking;
 import com.example.conf_room_sh.entity.ConferenceRoom;
 import com.example.conf_room_sh.exception.NotFoundAnythingException;
 import com.example.conf_room_sh.exception.SaveEntityException;
@@ -14,8 +13,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Objects;
-import java.util.Optional;
 import java.util.UUID;
 
 @Slf4j

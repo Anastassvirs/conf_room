@@ -11,9 +11,7 @@ import java.util.UUID;
 
 @Repository
 public interface TimeSlotRepository extends JpaRepository<TimeSlot, UUID> {
-    Page<TimeSlot> findAllByAvaliableAndAndRoomIdAndStartAfterAndEndBefore(Boolean available, UUID roomId, LocalDateTime startOfDay, LocalDateTime endOfDay, Pageable pageable);
-
-    Page<TimeSlot> findAllByRoomIdAndStartAfterAndEndBefore (UUID roomId, LocalDateTime startOfDay, LocalDateTime endOfDay, Pageable pageable);
+    Page<TimeSlot> findAllByRoomIdAndStartAfterAndEndBefore (UUID roomId, LocalDateTime startOfPeriod, LocalDateTime endOfPeriod, Pageable pageable);
 
     //TODO: Посмотреть, что он нагенерирует и подумать над оптимальностью
 }
