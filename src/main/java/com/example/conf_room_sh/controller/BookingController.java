@@ -8,6 +8,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -28,6 +30,15 @@ public class BookingController {
     @PostMapping
     public BookingDto create(@RequestBody BookingDto bookingDto) {
         return bookingService.create(bookingDto);
+    }
+
+    @PostMapping
+    public BookingDto createBooking(@RequestParam LocalDateTime start, // TODO: Подумать, надо ли делать тут конвертацию из стринга или норм так передавать
+                                    @RequestParam LocalDateTime end,
+                                    @RequestParam UUID room_id,
+                                    @RequestParam List<String> guestEmails,
+                                    @RequestParam (required = false, defaultValue = "") String comment) {
+        return bookingService.createBooking(start, end, room_id, guestEmails, comment);
     }
 
     @PatchMapping(path = "/{bookingId}")
