@@ -13,6 +13,7 @@ import java.util.UUID;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "bookings")
 public class Booking extends BaseEntity<UUID> {
 
     @Column
