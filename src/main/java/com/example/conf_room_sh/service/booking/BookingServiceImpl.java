@@ -6,7 +6,6 @@ import com.example.conf_room_sh.entity.Booking;
 import com.example.conf_room_sh.entity.TimeSlot;
 import com.example.conf_room_sh.entity.User;
 import com.example.conf_room_sh.exception.NotFoundAnythingException;
-import com.example.conf_room_sh.exception.SaveEntityException;
 import com.example.conf_room_sh.repository.BookingRepository;
 import com.example.conf_room_sh.repository.TimeSlotRepository;
 import com.example.conf_room_sh.repository.UserRepository;
@@ -59,26 +58,14 @@ public class BookingServiceImpl implements BookingService{
 
     @Transactional
     @Override
-    public BookingDto create(BookingDto bookingDto) {
-        Booking booking = bookingMapper.toBooking(bookingDto);
-        try {
-            log.debug("Добавлена новая бронь: {}", booking);
-            return bookingMapper.toBookingDto(bookingRepository.save(booking));
-        } catch (Exception e) {
-            log.debug("Произошла ошибка: Неправильно заполнены поля создаваемой брони");
-            throw new SaveEntityException("Неправильно заполнены поля создаваемой брони");
-        }
-    }
-
-    @Override
-    public BookingDto createBooking(LocalDateTime start, LocalDateTime end, UUID room_id, List<String> guestEmails, String comment) {
+    public BookingDto create(LocalDateTime start, LocalDateTime end, UUID room_id, List<String> guestEmails, String comment) {
         Set<User> guests = guestEmails.stream()
                 .map(email -> userRepository.findByEmail(email)
                         .orElseThrow(() -> new RuntimeException("Пользователь с данным email-ом не найден: " + email)))
                 .collect(Collectors.toSet());
 
 
-        Set<TimeSlot> timeSlots = timeSlotRepository.findAllByStartAfterOrStartEqualsAndEndBeforeOrEndEqual(start, end);
+        Set<TimeSlot> timeSlots = timeSlotRepository.findAllWithinRange(start, end);
         boolean allAvailable = timeSlots.stream().allMatch(TimeSlot::getAvaliable);
         if (!allAvailable) {
             throw new RuntimeException("Один или несколько слотов уже забронированы");

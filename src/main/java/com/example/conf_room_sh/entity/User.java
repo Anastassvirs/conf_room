@@ -14,6 +14,10 @@ import java.util.UUID;
 @AllArgsConstructor
 @Table(name = "users")
 public class User extends BaseEntity<UUID> {
+    public User(String name, String email) {
+        this.name = name;
+        this.email = email;
+    }
 
     @Column(nullable = false)
     private String name;

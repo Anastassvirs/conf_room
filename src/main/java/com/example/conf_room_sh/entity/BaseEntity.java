@@ -10,7 +10,6 @@ import org.springframework.data.domain.Persistable;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.UUID;
 
 @Getter
 @Setter
@@ -21,7 +20,17 @@ public abstract class BaseEntity<P extends Serializable> implements Persistable<
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    protected UUID id;
+    protected P id;
+
+    @Override
+    public P getId() {
+        return id;
+    }
+
+    public BaseEntity<P> setId(P id) {
+        this.id = id;
+        return this;
+    }
 
     @Override
     public boolean isNew() {

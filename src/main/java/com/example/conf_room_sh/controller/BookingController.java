@@ -28,17 +28,12 @@ public class BookingController {
     }
 
     @PostMapping
-    public BookingDto create(@RequestBody BookingDto bookingDto) {
-        return bookingService.create(bookingDto);
-    }
-
-    @PostMapping
-    public BookingDto createBooking(@RequestParam LocalDateTime start, // TODO: Подумать, надо ли делать тут конвертацию из стринга или норм так передавать
+    public BookingDto create(@RequestParam LocalDateTime start, // TODO: Подумать, надо ли делать тут конвертацию из стринга или норм так передавать
                                     @RequestParam LocalDateTime end,
                                     @RequestParam UUID room_id,
                                     @RequestParam List<String> guestEmails,
                                     @RequestParam (required = false, defaultValue = "") String comment) {
-        return bookingService.createBooking(start, end, room_id, guestEmails, comment);
+        return bookingService.create(start, end, room_id, guestEmails, comment);
     }
 
     @PatchMapping(path = "/{bookingId}")

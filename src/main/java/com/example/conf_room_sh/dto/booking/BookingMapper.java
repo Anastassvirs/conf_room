@@ -12,12 +12,6 @@ public class BookingMapper {
         );
     }
 
-    public Booking toBooking(BookingDto bookingDto) {
-        return new Booking(
-                bookingDto.getComment()
-        );
-    }
-
     public Page<BookingDto> toPageBookingDto(Page<Booking> bookingsPage) {
         return bookingsPage.map(this::toBookingDto);
     }
