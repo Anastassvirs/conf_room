@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <!-- Changeset 'users' -->
+    <changeSet id="1" author="anastsvirs">
+        <createTable tableName="users">
+            <column name="id" type="UUID">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="fulll_name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="email" type="VARCHAR(512)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addUniqueConstraint
+                columnNames="email"
+                constraintName="UQ_USER_EMAIL"
+                tableName="users"/>
+    </changeSet>
+
+    <!-- Changeset 'bookings' -->
+    <changeSet id="2" author="anastsvirs">
+        <createTable tableName="bookings">
+            <column name="id" type="UUID">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="comment" type="VARCHAR(512)"/>
+        </createTable>
+    </changeSet>
+
+    <!-- Changeset 'conference_rooms' -->
+    <changeSet id="3" author="anastsvirs">
+        <createTable tableName="conference_rooms">
+            <column name="id" type="UUID">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="VARCHAR(512)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <!-- Changeset 'time_slots' -->
+    <changeSet id="4" author="anastsvirs">
+        <createTable tableName="time_slots">
+            <column name="id" type="UUID">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="start_time" type="TIMESTAMP WITHOUT TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="end_time" type="TIMESTAMP WITHOUT TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="avaliable" type="BOOLEAN"/>
+            <column name="booking_id" type="UUID">
+                <constraints foreignKeyName="fk_time_slots_bookings" references="bookings(id)"/>
+            </column>
+            <column name="room_id" type="UUID">
+                <constraints foreignKeyName="fk_time_slots_conference_rooms" references="conference_rooms(id)"/>
+            </column>
+        </createTable>
+    </changeSet>
+    
+</databaseChangeLog>
