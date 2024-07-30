@@ -16,6 +16,13 @@ import java.util.UUID;
 @Table(name = "bookings")
 public class Booking extends BaseEntity<UUID> {
 
+    @PrePersist
+    protected void onPrePersist() {
+        if (id == null) {
+            id = UUID.randomUUID();
+        }
+    }
+
     @Column
     private String comment;
 

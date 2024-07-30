@@ -15,6 +15,13 @@ import java.util.UUID;
 @Table(name = "time_slots")
 public class TimeSlot extends BaseEntity<UUID> {
 
+    @PrePersist
+    protected void onPrePersist() {
+        if (id == null) {
+            id = UUID.randomUUID();
+        }
+    }
+
     @Column(nullable = false)
     private LocalDateTime start;
 

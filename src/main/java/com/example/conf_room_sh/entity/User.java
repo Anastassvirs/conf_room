@@ -19,6 +19,13 @@ public class User extends BaseEntity<UUID> {
         this.email = email;
     }
 
+    @PrePersist
+    protected void onPrePersist() {
+        if (id == null) {
+            id = UUID.randomUUID();
+        }
+    }
+
     @Column(nullable = false)
     private String name;
 
