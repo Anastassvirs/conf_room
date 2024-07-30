@@ -6,6 +6,10 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
 
+    <changeSet id="add-tag-1.0.0" author="anastsvirs">
+        <tagDatabase tag="v.1.0.0"/>
+    </changeSet>
+
     <include file="create-tables.xml" relativeToChangelogFile="true"/>
 
 </databaseChangeLog>
